@@ -5,12 +5,12 @@
 	$bras = $_GET['bras'] ? $_GET['bras'] : 1;
 	$host = $BRAS[$bras]['ip'];
 	$port = $BRAS[$bras]['porta'];
-	$user = $BRAS[$bras]['usuario'];
+	$uusr = $BRAS[$bras]['usuario'];
 	$pass = $BRAS[$bras]['senha'];
 
 	if($_GET['metodo'] == "int"){
 		// Essa função coleta a interface ao qual o usuário está conectado
-		$command = '/usr/bin/python /var/www/html/speed_niqturbo/junos.py int '.$_GET['login'].' '.$host.' '.$port.' '.$user.' '.$pass;
+		$command = '/usr/bin/python /var/www/html/speed_niqturbo/junos.py int '.$_GET['login'].' '.$host.' '.$port.' '.$uusr.' '.$pass;
 		
 			$output = shell_exec($command);
 			$output = preg_replace('/\\s\\s+/', ' ', $output);
@@ -25,7 +25,7 @@
 	
 	if($_GET['metodo'] == "vel"){
 		// Essa função coleta dados de navegação uma vez que já sabemos qual é a interface
-		$command = '/usr/bin/python /var/www/html/speed_niqturbo/junos.py vel '.$_GET['interface'].' '.$host.' '.$port.' '.$user.' '.$pass;
+		$command = '/usr/bin/python /var/www/html/speed_niqturbo/junos.py vel '.$_GET['interface'].' '.$host.' '.$port.' '.$uusr.' '.$pass;
 		
 		$output = shell_exec($command);
 		$output = preg_replace('/\\s\\s+/', ' ', $output);
@@ -71,19 +71,14 @@
 								  <h4 id="endoflife" class="highcharts-description"> </h4>
 							</figure>
 						</div>
-						<div class="col s6">
-							<figure  class="highcharts-figure">
-								<div style="display:none;" id="nat"></div>
-							</figure>
-						</div>
 					</div>
 	';
 	
 		
 	echo '
-	</div>
-	</div>
-	</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	';
 	

@@ -14,13 +14,13 @@ password = sys.argv[6]
 
 
 if metodo == "nat":
-	COMANDO = "show services sessions source-prefix "+login+" count "
+    COMANDO = "show services sessions source-prefix "+login+" count "
 elif metodo == "int":
-	COMANDO = "show subscribers user-name "+login+" | match pp0 "
+    COMANDO = "show subscribers user-name "+login+" | match pp0 "
 elif metodo == "natspy":
     COMANDO = "show services sessions source-prefix "+login+" | no-more"
 else:
-	COMANDO = "show interfaces "+login+" extensive | match bps "
+    COMANDO = "show interfaces "+login+" extensive | match bps "
 
  
 class SSH:

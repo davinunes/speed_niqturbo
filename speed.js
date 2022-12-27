@@ -16,10 +16,9 @@ $(document).ready(function(){
 			iface();
 		}else{
 			console.log("Estado Online com: "+encerrar);
-			$("#endoflife").html("Monitorando uso de banda...");
+			let tempo = respawn/1000*repetir-encerrar*respawn/1000;
+			$("#endoflife").html("Monitorando uso de banda... "+tempo);
 			bps();
-			nat();
-			$("#nat").show();
 			$("#container").show();
 			
 		}
@@ -27,19 +26,13 @@ $(document).ready(function(){
 		if(encerrar > repetir){
 			clearInterval(contar);
 			console.log("End of Life com: "+encerrar);
-			// console.log("Download:"+Download);
-			// console.log("Upload:"+Upload);
-			// console.log("Inicio:"+Hora[0]);
 			setTimeout(function(){
 				$("#endoflife").html("Monitoramento encerrado!");
-				$(".natsnap").show();
 				var uid = $("#download").attr("login")+'_'+Hora[0];
 				// Download, Upload, Inicio, Intervalo, Id, Titulo
 				Resultado = exportaGrafico(Download,Upload,Hora[0],respawn,uid,'Trafego observado de '+$("#download").attr("login")+' por '+respawn/1000*repetir+' seg');
 				Resultado = Resultado.replace(/'/g,"\\'");
 				console.log(Resultado);
-				$("#savetest").show();
-				
 			},respawn);
 		}
 	},respawn);	
@@ -49,12 +42,14 @@ $(document).ready(function(){
 function iface() {
 	let login = $("#download").attr("login");
 	let bras = $("#download").attr("bras");
-	var url = 'speed.php?metodo=int&login='+login+'&bras='+bras;
+	var url = 'index.php?metodo=int&login='+login+'&bras='+bras;
 	// console.log("iface: "+url);
-    
+    let performance = window.performance.now();
     $.post(url, "", function(data) {
-       var dados = JSON.parse(data);
-        console.log(dados);
+		console.log(data);
+		console.log("Delay para encontrar a interface: ".concat(window.performance.now()-performance));
+		var dados = JSON.parse(data);
+        // console.log(dados);
 		console.log(dados.interface);
 		if(dados.ipv4 == null){
 			$("#download").attr({status:"offline"});
@@ -69,10 +64,12 @@ function iface() {
 function bps() {
 	let interface = $("#download").attr("interface");
 	let bras = $("#download").attr("bras");
-	var url = 'speed.php?metodo=vel&interface='+interface+'&bras='+bras;
+	let performance = window.performance.now();
+	var url = 'index.php?metodo=vel&interface='+interface+'&bras='+bras;
 		$.post(url, "", function(data) {
-		   var dados = JSON.parse(data);
+			var dados = JSON.parse(data);
 			console.log(dados.download);
+			console.log("Delay para medir consumo: ".concat(window.performance.now()-performance));
 			$("#dados").attr({download:dados.download});
 			console.log(dados.upload);
 			$("#dados").attr({upload:dados.upload});
